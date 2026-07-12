@@ -28,6 +28,10 @@ const User = sequelize.define("user", {
             'consultation'
         ),
         allowNull: false
+    },
+    refreshToken: {
+        type: DataTypes.STRING,
+
     }
 },
     {

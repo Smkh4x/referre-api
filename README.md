@@ -45,3 +45,35 @@ src/
 │
 ├── .env
 └── .env.example
+
+# refresh token : 
+Login
+   │
+   ▼
+Server
+   │
+   ├── Access Token (1h)
+   └── Refresh Token (7d)
+           │
+           ▼
+      Database + Frontend
+
+بعد ساعة
+      │
+      ▼
+Access Token Expired
+      │
+      ▼
+Frontend -> POST /refresh
+      │
+      ▼
+Server يتحقق من Refresh Token
+      │
+      ├── غير صالح → 401
+      └── صالح
+             │
+             ▼
+      إصدار Access Token جديد
+             │
+             ▼
+Frontend يخزن الجديد

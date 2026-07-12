@@ -2,6 +2,7 @@ import usersLogic from "../controllers/auth.controller.js";
 import express from "express";
 import authenticate from "../middlewares/authenticate.js";
 import authorize from "../middlewares/authorize.js";
+import verfiyToken from "../controllers/verify.token.controller.js";
 
 
 const router = express.Router();
@@ -14,5 +15,6 @@ router.get("/admin", authenticate, authorize("admin"), (req, res) => {
         message: "welcome admin",
     })
 })
+router.post("/refresh", verfiyToken);
 
 export default router;

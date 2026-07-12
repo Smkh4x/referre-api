@@ -19,7 +19,7 @@ class usersLogic {
             return res.status(400).json({
                 message: "this is email already exists"
             })
-        if(!req.body.email.endsWith(endEmail)) return res.status(400).json({message: "not a email addres"})
+        if (!req.body.email.endsWith(endEmail)) return res.status(400).json({ message: "not a email addres" })
 
         const adminExits = await User.findOne({
             where: { role }
@@ -68,21 +68,39 @@ class usersLogic {
             process.env.JWT_SECRET,
 
             {
-                expiresIn: "1h"
+                expiresIn: process.env.JWT_EXPIRES_IN
             },
         )
+        const refresh_Token = jwt.sign(
+            {
+                id: user.id,
+            },
+            process.env.JWT_SECRET_REFRESH,
+            {
+                expiresIn: process.env.JWT_REFRESH_EXPIRES_IN
+            }
+        )
+        user.refreshToken = refresh_Token
+        await user.save()
+        // const decode = jwt.verify(
+        //     refresh_Token,
+        //     process.env.JWT_SECRET_REFRESH
+        // )
+        // console.log(decode)
+        // console.log(refresh_Token)
         res.status(200).json({
             //user,
             message: "login succesfully",
-            token
+            "this is token ": token,
+            "this is refresh token : ": refresh_Token,
         })
     }
     me = async (req, res) => {
         try {
             const user = await User.findByPk(req.authUser.id)
             if (!user) return res.status(400).json({ message: "user not found" })
-                user.password = undefined;
-            res.status(200).json({user})
+            user.password = undefined;
+            res.status(200).json({ user })
 
         } catch (err) {
             console.log({ "error in ": err.message })
