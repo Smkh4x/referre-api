@@ -1,4 +1,4 @@
-
+import * as z from "zod"
 export const validationMatch = (req, res, next) => {
     const {
         equipeDomicile,
@@ -46,4 +46,12 @@ export const validationAffecation = (req, res, next) => {
     }
     next();
 
+}
+export const validate = (schema) => {
+    return (req, res, next) => {
+        const result = schema.safeParse(req.body);
+        if(!result.success) return res.status(400).json({errors: result.error.errors})
+            req.body = result.data;
+        next()
+    }
 }

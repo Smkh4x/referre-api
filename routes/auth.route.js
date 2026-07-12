@@ -3,11 +3,13 @@ import express from "express";
 import authenticate from "../middlewares/authenticate.js";
 import authorize from "../middlewares/authorize.js";
 import verfiyToken from "../controllers/verify.token.controller.js";
+import { validate } from "../middlewares/validate.middleware.js";
+import registerSchema from "../controllers/auth.validation.js";
 
 
 const router = express.Router();
 
-router.post("/register",authenticate, authorize("admin"), usersLogic.register);
+router.post("/register",authenticate, authorize("admin"),validate(registerSchema), usersLogic.register);
 router.post("/login", usersLogic.login);
 router.get("/me",authenticate, usersLogic.me);
 router.get("/admin", authenticate, authorize("admin"), (req, res) => {
