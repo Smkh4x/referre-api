@@ -3,7 +3,7 @@ const authenticate = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
 
-    // console.log("header :", authHeader)
+    console.log("header :", authHeader)
 
     if (!authHeader) return res.status(401).json({ message: "No token available" })
 
